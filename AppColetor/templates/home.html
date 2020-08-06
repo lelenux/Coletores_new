@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}home{% endblock %}
+{% block main %}
+    <br>
+    <br>
+
+    <nav class="navbar " style="background-color: #2F4F2F;">
+        <span class="navbar-brand h1 text-white">KEEPERS LOGÍSTICA - CONTROLE DE COLETORES</span>
+    </nav>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href={% url 'controle' %}>Retirada de Equipamentos </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Informações
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href={% url 'adduser' %}>Cadastro Usuário</a>
+                        <a class="dropdown-item" href={% url 'addcoletor' %}>Cadastro Coletor</a>
+                        <a class="dropdown-item" href={% url 'history' %}>Histórico</a>
+                        {#                        <div class="dropdown-divider"></div>#}
+                        {#                        <a class="dropdown-item" href="#">Something else here</a>#}
+                    </div>
+                </li>
+            </ul>
+            <form method="get" class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" name="busca" placeholder="Pesquisar"
+                       aria-label="Coletor">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+            </form>
+        </div>
+    </nav>
+
+    <br>
+    <br>
+
+    <div class="panel-body">
+    <div class="panel-heading">
+        <h3 class="navbar navbar-light mb-0 text-white" style="background-color: #2F4F2F;">Controle</h3>
+    </div>
+
+    <table class="table table-hover">
+        <caption>Lista de Colaboradores/ Equipamentos</caption>
+        <thead>
+        <tr>
+            {#                <th scope="row">#</th>#}
+            <th scope="col">Nome</th>
+            <th scope="col">Matricula</th>
+            <th scope="col">Coletor</th>
+            <th scope="col">Status</th>
+            <th scope="col">Pendente</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for controle in lista %}
+            <tr>
+                {#                                    <th scope="row"></th>#}
+                <td><a href="{% url 'coletor_update' controle.id %}">{{ controle.operador }}</a></td>
+                <td>{{ controle.operador.cracha }}</td>
+                <td>{{ controle.coletor }}</td>
+                <td>{{ controle.coletor.get_status_display }}</td>
+
+                {% if controle.dtentrega %}
+                    <td><a class="btn btn-small btn-info" href="{% url 'voltar_coletor' controle.id %}"
+                    >{{ controle.dtentrega|date:"d/m/Y H:i" }}</a></td>
+                {% else %}
+                    <td><a class="btn btn-small btn-danger" href="{% url 'entrega_coletor' controle.id %}">
+                        Realizar Entrega</a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+    <br>
+    <a href="{% url 'logout' %}" class="btn btn-primary">Sair</a>
+{% endblock %}

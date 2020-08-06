@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %} Cadastro {% endblock %}
+{% block main %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <h5 class="card-header text-white" style="background-color: #2F4F2F;">Cadastro de Equipamentos</h5>
+    <form action="{% url 'addcoletor' %}" method="post">
+        {% csrf_token %}
+        <div class="card-body">
+            {% if form.errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+                <div class="col-md-8">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <label for="{{ field.id_for_label }}">Número do Coletor</label>
+                            {% render_field form.codigo class="form-control" placeholder=form.codigo.label %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <label for="{{ field.id_for_label }}">Modelo</label>
+                            {% render_field form.model class="form-control" placeholder=form.model.label %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <label for="{{ field.id_for_label }}">Marca</label>
+                            {% render_field form.marca class="form-control" placeholder=form.marca.label %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <label for="{{ field.id_for_label }}">Número de Série</label>
+                            {% render_field form.serial_number class="form-control" placeholder=form.serial_number.label %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <label for="{{ field.id_for_label }}">Status</label>
+                            {% render_field form.status class="form-control" placeholder=form.status.label %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer bg-transparent">
+            <button type="submit" class="btn btn-success">
+                <span class="glyphicon glyphicon-ok"></span> Salvar
+            </button>
+            <a href="{% url 'listar_controles' %}" class="btn btn-default">Cancelar</a>
+        </div>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Listagem de Dados{% endblock %}
+{% block main %}
+    <br>
+    <br>
+
+    <div class="panel-body">
+    <div class="panel-heading">
+        <h3 class="navbar h1 text-white" style="background-color: #2F4F2F;">Histórico</h3>
+    </div>
+    <div style="text-align: center; margin-top: 100px">
+        <input type="date">
+        {{ exemple_form.my_date_field }}
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                {#                <th scope="row">#</th>#}
+                <th scope="col">Nome</th>
+                <th scope="col">Matricula</th>
+                <th scope="col">Entregou</th>
+                <th scope="col">Data Retirada</th>
+                <th scope="col">Data Entrega</th>
+                <th scope="col">Recebeu</th>
+                <th scope="col">Status Equip.</th>
+                <th scope="col">Observação</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for controle in dados %}
+                <tr>
+
+                <td>{{ controle.operador }}</td>
+                <td>{{ controle.operador.cracha }}</td>
+                <td>{{ controle.userretirada }}</td>
+                <td>{{ controle.dtretirada }}</td>
+                <td>{{ controle.dtentrega }}</td>
+                <td>{{ controle.userentrega }}</td>
+                <td>{{ controle.coletor.get_status_display }}</td>
+                <td>{{ controle.observacao }}</td>
+
+
+
+            {% endfor %}
+    </div>
+
+{% endblock %}
+
+{#                <div class="col-md-4">#}
+{#                    <div class="caption">#}
+{#                        <p>{{ controle.operador }} - {{ controle.coletor.codigo }} -#}
+{#                            {{ controle.userretirada }} - {{ controle.dtretirada }} -#}
+{#                            {{ controle.dtentrega }} - {{ controle.userentrega }} -#}
+{#                            {{ controle.observacao }} -#}
+{#                            {{ controle.coletor.get_status_display }}</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#                #}
+{#                #}

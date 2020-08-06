@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{#{% load bootstrap %}#}
+{% load widget_tweaks %}
+{% block title %} Controle de Equipamentos {% endblock %}
+{% block main %}
+
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <h5 class="card-header">Retirada deEquipamentos</h5>
+    <form action="{% url 'controle' %}" method="post">
+        {% csrf_token %}
+        <div class="card-body">
+            {% if form.errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <label for="{{ field.id_for_label }}">Matricula</label>
+                            {% render_field form.cracha class="form-control" placeholder=form.cracha.label %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <label for="{{ field.id_for_label }}">Nome Completo</label>
+                            {% render_field form.nome class="form-control" placeholder=form.nome.label %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <label for="{{ field.id_for_label }}">Coletor</label>
+                            {% render_field form.codigo class="form-control" placeholder=form.codigo.label %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <label for="{{ field.id_for_label }}">S/n</label>
+                            {% render_field form.serial class="form-control" placeholder=form.serial.label %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <label for="{{ field.id_for_label }}">Marca</label>
+                            {% render_field form.marca class="form-control" placeholder=form.marca.label %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer bg-transparent">
+            <button type="submit" class="btn btn-success">
+                <span class="glyphicon glyphicon-ok"></span> Salvar
+            </button>
+            <a href="{% url 'listar_controles' %}" class="btn btn-default">Cancelar</a>
+        </div>
+    </form>
+
+
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        });
+
+        $(document).ready(function () {
+            $("#id_cracha").blur(function () {
+                var matricula = $("#id_cracha").val()
+                $.ajax({
+                    url:"/search/user/" + matricula,
+                    type: "GET",
+                    success: function (data) {
+                        $("#id_nome").val(data.nome)
+                    },
+                    error: function () {
+                         $("#id_nome").val("")
+                    }
+
+                })
+            })
+            $("#id_codigo").blur(function () {
+                var coletor = $("#id_codigo").val()
+                $.ajax({
+                    url:"/search/coletor/" + coletor,
+                    type: "GET",
+                    success: function (data) {
+                        $("#id_serial").val(data.serial_number)
+                        $("#id_marca").val(data.marca)
+                    },
+                    error: function () {
+                         $("#id_serial").val("")
+                    }
+
+                })
+            })
+        })
+
+    </script>
+
+
+{% endblock %}
