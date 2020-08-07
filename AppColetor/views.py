@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime, timedelta
 from django.utils import timezone
+from datetime import datetime
 from django.db.models import Q
 
 
@@ -105,18 +106,21 @@ def entrega_coletor(request, id):
     return redirect('listar_controles')
 
 
-def history(request):
-     dados = Controle.objects.all().order_by("dtretirada")
-     return render(request, 'list_control.html', {'dados': dados})
+def history(request, template_name='list_control.html'):
+    dtinicial = request.GET.get("dtinicial")
+    dtfinal = request.GET.get("dtfinal")
+    if dtinicial and dtfinal:
+        dtinicial = f"{dtinicial} 00:00:00"
+        dtfinal = f"{dtfinal} 23:59:59"
+        dt = Controle.objects.filter(dtretirada__gte=dtinicial, dtretirada__lte=dtfinal)
+
+        return render(request, template_name, {'dados': dt})
+
+    dados = Controle.objects.all().order_by("dtretirada")
+    return render(request, 'list_control.html', {'dados': dados})
 
 
-# def date(request):
-#     date = Controle.objects.filter('dtretirada')
-#
+def listar_coletores(request):
+    coletor = Coletores.objects.all()
+    return render(request, 'coletores_list.html', {'dados': coletor})
 
-    #
-    #
-    # history = request.GET.get("history")
-    # if history:
-    #     pessoa = Controle.objects.filter(dtcadastro__gte=datetime.now() - timedelta(days=3))
-    # return render(request, template, pessoa)

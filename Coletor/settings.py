@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'AppColetor',
     'login',
-    'configurar datetimepicker no django',
+    # 'configurar datetimepicker no django',
 
     'widget_tweaks',
 ]

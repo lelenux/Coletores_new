@@ -8,16 +8,20 @@
     <div class="panel-heading">
         <h3 class="navbar h1 text-white" style="background-color: #2F4F2F;">Histórico</h3>
     </div>
-    <div style="text-align: center; margin-top: 100px">
-        <input type="date">
-        {{ exemple_form.my_date_field }}
+        <div class="shadow p-3 mb-5 bg-white rounded">
+    <form method="get" class="form-inline my-2 my-lg-0"  style="text-align: center; margin-top: 100px">
+        <h1 class="navbar h1 " >De:</h1>
+        <input type="date" name="dtinicial">
+        <h1 class="navbar h1 " >Até:</h1>
+        <input type="date" name="dtfinal">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+    </form>
+    </div>
     </div>
     <br>
-    <br>
-    <br>
-
     <div class="row">
         <table class="table table-hover">
+        <caption>Histórico de Registros</caption>
             <thead>
             <tr>
                 {#                <th scope="row">#</th>#}
@@ -45,20 +49,11 @@
                 <td>{{ controle.observacao }}</td>
 
 
-
             {% endfor %}
+            </tr>
+            </tbody>
+        </table>
     </div>
-
-{% endblock %}
-
-{#                <div class="col-md-4">#}
-{#                    <div class="caption">#}
-{#                        <p>{{ controle.operador }} - {{ controle.coletor.codigo }} -#}
-{#                            {{ controle.userretirada }} - {{ controle.dtretirada }} -#}
-{#                            {{ controle.dtentrega }} - {{ controle.userentrega }} -#}
-{#                            {{ controle.observacao }} -#}
-{#                            {{ controle.coletor.get_status_display }}</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#                #}
-{#                #}
+    <br>
+ <a href="{% url 'listar_controles' %}" class="btn btn-primary">Voltar</a>
+    {% endblock %}

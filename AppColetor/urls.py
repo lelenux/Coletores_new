@@ -14,6 +14,5 @@ urlpatterns = [
     path('update/<int:id>/', coletor_update, name="coletor_update"),
     path('voltar/<int:id>/', voltar_coletor, name="voltar_coletor"),
     path('history/', history, name="history"),
-
-    # path('saida/<int:id>/', saida_update, name="saida_update"),
+    path('coletores_list/', listar_coletores, name="coletores_list"),
 ]
