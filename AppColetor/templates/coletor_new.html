@@ -2,9 +2,12 @@
 {% load widget_tweaks %}
 {% block title %} Cadastro {% endblock %}
 {% block main %}
+    <br>
+    <br>
     <meta name="csrf-token" content="{{ csrf_token }}">
     <h5 class="card-header text-white" style="background-color: #2F4F2F;">Cadastro de Equipamentos</h5>
-    <form action="{% url 'addcoletor' %}" method="post">
+{#    <form action="{% url 'addcoletor' %}" method="post">#}
+    <form method="post">
         {% csrf_token %}
         <div class="card-body">
             {% if form.errors %}

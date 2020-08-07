@@ -3,9 +3,12 @@
 {% load widget_tweaks %}
 {% block title %} Controle de Equipamentos {% endblock %}
 {% block main %}
-
+<br>
+    <br>
     <meta name="csrf-token" content="{{ csrf_token }}">
-    <h5 class="card-header">Retirada deEquipamentos</h5>
+    <nav class="navbar " style="background-color: #2F4F2F;">
+        <span class="navbar-brand h1 text-white">Retirada de Equipamentos</span>
+    </nav>
     <form action="{% url 'controle' %}" method="post">
         {% csrf_token %}
         <div class="card-body">

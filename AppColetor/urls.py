@@ -15,4 +15,5 @@ urlpatterns = [
     path('voltar/<int:id>/', voltar_coletor, name="voltar_coletor"),
     path('history/', history, name="history"),
     path('coletores_list/', listar_coletores, name="coletores_list"),
+    path('status_coletor_update/<int:id>/', status_coletor_update, name="status_coletor_update"),
 ]

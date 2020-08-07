@@ -90,6 +90,17 @@ def coletor_update(request, id):
     return redirect('listar_controles')
 
 
+def status_coletor_update(request, id):
+    coletor = get_object_or_404(Coletores, pk=id)
+    form = ColetoresForm(request.POST or None, request.FILES or None, instance=coletor)
+
+    if form.is_valid():
+        form.save()
+        return redirect('coletores_list')
+    return render(request, 'coletor_new.html', {"form": form})
+
+
+
 def voltar_coletor(request, id):
     coletor = get_object_or_404(Controle, pk=id)
     coletor.dtentrega = None

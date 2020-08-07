@@ -4,39 +4,77 @@
     <br>
     <br>
 
-    <div class="panel-body">
+    <nav class="navbar " style="background-color: #2F4F2F;">
+        <span class="navbar-brand h1 text-white">KEEPERS LOGÍSTICA - CONTROLE DE COLETORES</span>
+    </nav>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'controle' %}>Registrar Equipamentos</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Informações
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href={% url 'adduser' %}>Cadastro Usuário</a>
+                        <a class="dropdown-item" href={% url 'addcoletor' %}>Cadastro Coletor</a>
+                        <a class="dropdown-item" href={% url 'coletores_list' %}>Lista de Coletores</a>
+                        <a class="dropdown-item" href={% url 'history' %}>Histórico</a>
+                        {#                        <div class="dropdown-divider"></div>#}
+                        {#                        <a class="dropdown-item" href="#">Something else here</a>#}
+                    </div>
+                </li>
+            </ul>
+            <form method="get" class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" name="busca" placeholder="Pesquisar"
+                       aria-label="Coletor">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+            </form>
+        </div>
+    </nav>
+
+    <br>
+    <br>
+
     <div class="panel-heading">
-        <h3 class="navbar h1 text-white" style="background-color: #2F4F2F;">Coletores</h3>
+        <h3 class="navbar navbar-light mb-0 text-white" style="background-color: #2F4F2F;">Lista de Coletores - Keepers
+            Logística</h3>
     </div>
-        <div class="shadow p-3 mb-5 bg-white rounded">
-    <div class="row">
-        <table class="table table-hover">
+
+    <table class="table table-hover">
         <caption>Lista de Coletores</caption>
-            <thead>
+        <thead>
+        <tr>
+            {#                <th scope="row">#</th>#}
+            <th scope="col">Código</th>
+            <th scope="col">Modelo</th>
+            <th scope="col">Marca</th>
+            <th scope="col">Número de Série</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for coletor in dados %}
             <tr>
-                {#                <th scope="row">#</th>#}
-                <th scope="col">Código</th>
-                <th scope="col">Modelo</th>
-                <th scope="col">Marca</th>
-                <th scope="col">Número de Série</th>
-                <th scope="col">Status</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for coletor in dados %}
-                <tr>
 
-                <td>{{ coletor.codigo }}</td>
-                <td>{{ coletor.model }}</td>
-                <td>{{ coletor.get_marca_display }}</td>
-                <td>{{ coletor.serial_number }}</td>
-                <td>{{ coletor.get_status_display }}</td>
+            <td><a href="{% url 'status_coletor_update' coletor.id %}">{{ coletor.codigo }}</a></td>
+            <td>{{ coletor.model }}</td>
+            <td>{{ coletor.get_marca_display }}</td>
+            <td>{{ coletor.serial_number }}</td>
+            <td>{{ coletor.get_status_display }}</td>
 
-            {% endfor %}
-            </tr>
-            </tbody>
-        </table>
+        {% endfor %}
+        </tr>
+        </tbody>
+    </table>
     </div>
     <br>
- <a href="{% url 'listar_controles' %}" class="btn btn-primary">Voltar</a>
-    {% endblock %}
+    <a href="{% url 'listar_controles' %}" class="btn btn-primary">Voltar</a>
+{% endblock %}
