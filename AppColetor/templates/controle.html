@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 {% block title %} Controle de Equipamentos {% endblock %}
 {% block main %}
-<br>
+    <br>
     <br>
     <meta name="csrf-token" content="{{ csrf_token }}">
     <nav class="navbar " style="background-color: #2F4F2F;">
@@ -64,6 +64,16 @@
                         </div>
                     </div>
                 </div>
+                {% if entrega and entrega %}
+                    <div class="col-md-8">
+                        <div class="form-row">
+                            <div class="col-md-8">
+                                <label for="{{ field.id_for_label }}">Observacao</label>
+                                {% render_field form.observacao class="form-control" placeholder=form.observacao.label %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
@@ -97,6 +107,7 @@
             }
             return cookieValue;
         }
+
         var csrftoken = getCookie('csrftoken');
         $.ajaxSetup({
             beforeSend: function (xhr, settings) {
@@ -108,13 +119,13 @@
             $("#id_cracha").blur(function () {
                 var matricula = $("#id_cracha").val()
                 $.ajax({
-                    url:"/search/user/" + matricula,
+                    url: "/search/user/" + matricula,
                     type: "GET",
                     success: function (data) {
                         $("#id_nome").val(data.nome)
                     },
                     error: function () {
-                         $("#id_nome").val("")
+                        $("#id_nome").val("")
                     }
 
                 })
@@ -122,14 +133,14 @@
             $("#id_codigo").blur(function () {
                 var coletor = $("#id_codigo").val()
                 $.ajax({
-                    url:"/search/coletor/" + coletor,
+                    url: "/search/coletor/" + coletor,
                     type: "GET",
                     success: function (data) {
                         $("#id_serial").val(data.serial_number)
                         $("#id_marca").val(data.marca)
                     },
                     error: function () {
-                         $("#id_serial").val("")
+                        $("#id_serial").val("")
                     }
 
                 })

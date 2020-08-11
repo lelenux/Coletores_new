@@ -15,5 +15,7 @@ urlpatterns = [
     path('voltar/<int:id>/', voltar_coletor, name="voltar_coletor"),
     path('history/', history, name="history"),
     path('coletores_list/', listar_coletores, name="coletores_list"),
-    path('status_coletor_update/<int:id>/', status_coletor_update, name="status_coletor_update"),
+    path('status_coletor_update/<int:id>/', status_coletor_update, name="status_coletor_update"), #
+    path('observacao/<int:id>/', observacao, name="observacao"), #
+    #primeira opeção trago a url + um ID / na segunda o nome da minha view com as regras. e terceiro um alias.
 ]

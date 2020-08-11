@@ -21,10 +21,10 @@ def listar_controles(request, template_name="home.html"):
     return render(request, template_name, {'lista': coletores})
 
 
-@login_required
-def controles_new(request):
-    form_controle = PessoasForm(request.POST, None)
-    return render(request, 'user_new.html', {'form': form_controle})
+# @login_required
+# def controles_new(request):
+#     form_controle = PessoasForm(request.POST, None)
+#     return render(request, 'user_new.html', {'form': form_controle})
 
 
 @login_required
@@ -47,17 +47,17 @@ def addcoletor(request):
 def controle(request):
     form_controle = ControleForm(request.POST, None)
 
-    if request.POST:
-        if form_controle.is_valid():
-            data = form_controle.cleaned_data
-            operador = CadastroPessoa.objects.get(cracha=data.get("cracha"))
-            coletor = Coletores.objects.get(codigo=data.get("codigo"))
-            doc = form_controle.save(commit=False)
-            doc.operador = operador
-            doc.coletor = coletor
-            doc.userretirada = request.user
-            doc.save()
-            return redirect('listar_controles')
+    if form_controle.is_valid():
+        data = form_controle.cleaned_data
+        operador = CadastroPessoa.objects.get(cracha=data.get("cracha"))
+        coletor = Coletores.objects.get(codigo=data.get("codigo"))
+        doc = form_controle.save(commit=False)
+        doc.operador = operador
+        doc.coletor = coletor
+        doc.userretirada = request.user
+        doc.save()
+        # form_controle.save()
+        return redirect('listar_controles')
     return render(request, 'controle.html', {'form': form_controle})
 
 
@@ -90,15 +90,25 @@ def coletor_update(request, id):
     return redirect('listar_controles')
 
 
-def status_coletor_update(request, id):
-    coletor = get_object_or_404(Coletores, pk=id)
-    form = ColetoresForm(request.POST or None, request.FILES or None, instance=coletor)
+def status_coletor_update(request, id): # Recebe a reposta da pesquisa + o ID.
+    coletor = get_object_or_404(Coletores, pk=id) # Tenta recuperar o objeto que o usuario esta tentando, se não ele retorna o erro de 404 de dado que não exsite)
+    # Pego o ID no banco pelo "pk é o ID de cada código do coletor no banco"
+    form = ColetoresForm(request.POST or None, instance=coletor) # instanciando o form se Or None(se tiver alguma coisa no banco
+    # ele já instancia se não cria um novo, No instance é o valor recuperado da consulta, ou seja o form já inicia com uma instancia do ID.)
 
     if form.is_valid():
         form.save()
         return redirect('coletores_list')
     return render(request, 'coletor_new.html', {"form": form})
 
+
+def observacao(request, id):
+    controle = get_object_or_404(Controle, pk=id)
+    form = ControleForm(request.POST or None, instance=controle)
+    if form.is_valid():
+        form.save()
+        return redirect('list_control.html')
+    return render(request, 'controle.html', {"form": form, "entrega": True})
 
 
 def voltar_coletor(request, id):

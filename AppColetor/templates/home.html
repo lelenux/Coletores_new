@@ -44,45 +44,51 @@
     <br>
 
     <div class="panel-body">
-    <div class="panel-heading">
-        <h3 class="navbar navbar-light mb-0 text-white" style="background-color: #2F4F2F;">Controle</h3>
-    </div>
+        <div class="panel-heading">
+            <h3 class="navbar navbar-light mb-0 text-white" style="background-color: #2F4F2F;">Controle</h3>
+        </div>
 
-    <table class="table table-hover">
-        <caption>Lista de Colaboradores/ Equipamentos</caption>
-        <thead>
-        <tr>
-            {#                <th scope="row">#</th>#}
-            <th scope="col">Nome</th>
-            <th scope="col">Matricula</th>
-            <th scope="col">Coletor</th>
-            <th scope="col">Status</th>
-            <th scope="col">Pendente</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for controle in lista %}
+        <table class="table table-hover">
+            <caption>Lista de Colaboradores/ Equipamentos</caption>
+            <thead>
             <tr>
-                {#                                    <th scope="row"></th>#}
-                <td><a href="{% url 'coletor_update' controle.id %}">{{ controle.operador }}</a></td>
-                <td>{{ controle.operador.cracha }}</td>
-                <td>{{ controle.coletor }}</td>
-                <td>{{ controle.coletor.get_status_display }}</td>
-
-                {% if controle.dtentrega %}
-                    <td><a class="btn btn-small btn-info" href="{% url 'voltar_coletor' controle.id %}"
-                    >{{ controle.dtentrega|date:"d/m/Y H:i" }}</a></td>
-                {% else %}
-                    <td><a class="btn btn-small btn-danger" href="{% url 'entrega_coletor' controle.id %}">
-                        Realizar Entrega</a></td>
-                {% endif %}
+                {#                <th scope="row">#</th>#}
+                <th scope="col">Nome</th>
+                <th scope="col">Matricula</th>
+                <th scope="col">Coletor</th>
+                <th scope="col">Status</th>
+                <th scope="col">Pendente</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for controle in lista %}
+                <tr>
+                    {#                                    <th scope="row"></th>#}
+                    <td><a href="{% url 'coletor_update' controle.id %}">{{ controle.operador }}</a></td>
+                    <td>{{ controle.operador.cracha }}</td>
+                    <td>{{ controle.coletor }}</td>
+                    <td>{{ controle.coletor.get_status_display }}</td>
 
-    <br>
-    <br>
-    <br>
-    <a href="{% url 'logout' %}" class="btn btn-danger">Sair</a>
+                    {% if controle.dtentrega %}
+                        <td><a class="btn btn-small btn-info" href="{% url 'voltar_coletor' controle.id %}"
+
+                        >{{ controle.dtentrega|date:"d/m/Y H:i" }}</a></td>
+
+                    {% else %}
+                        <td><a class="btn btn-small btn-danger" href="{% url 'observacao' controle.id %}">
+                            Realizar Entrega</a></td>
+{#                        <td><a class="btn btn-small btn-danger" href="{% url 'controle' controle.observacao %}">Realizar Entrega</a></td>#}
+
+{#                        <td><a class="btn btn-small btn-danger" href="{% url 'entrega_coletor' controle.id %}">#}
+{#                            Realizar Entrega</a></td>#}
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+        <br>
+        <br>
+        <a href="{% url 'logout' %}" class="btn btn-danger">Sair</a>
 {% endblock %}

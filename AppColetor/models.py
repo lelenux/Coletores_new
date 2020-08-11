@@ -51,6 +51,6 @@ class Controle(models.Model):
     userentrega = models.ForeignKey(User, related_name='userentrega', null=True, blank=True, on_delete=models.PROTECT)
     observacao = models.TextField(null=True, blank=True)
 
-    def __str__(self):
-        return f"{self.operador} - {self.coletor}"
+    # def __str__(self):
+    #     return f"{self.operador} - {self.coletor}"
 
