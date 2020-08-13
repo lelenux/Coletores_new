@@ -21,12 +21,6 @@ def listar_controles(request, template_name="home.html"):
     return render(request, template_name, {'lista': coletores})
 
 
-# @login_required
-# def controles_new(request):
-#     form_controle = PessoasForm(request.POST, None)
-#     return render(request, 'user_new.html', {'form': form_controle})
-
-
 @login_required
 def adduser(request):
     form_user = PessoasForm(request.POST, None)
@@ -34,6 +28,7 @@ def adduser(request):
         form_user.save()
         return redirect('listar_controles')
     return render(request, 'user_new.html', {'form': form_user})
+
 
 @login_required
 def addcoletor(request):
@@ -104,11 +99,20 @@ def status_coletor_update(request, id): # Recebe a reposta da pesquisa + o ID.
 
 def observacao(request, id):
     controle = get_object_or_404(Controle, pk=id)
-    form = ControleForm(request.POST or None, instance=controle)
-    if form.is_valid():
-        form.save()
-        return redirect('list_control.html')
-    return render(request, 'controle.html', {"form": form, "entrega": True})
+    form_controle = ControleForm(request.POST or None, instance=controle)
+    if form_controle.is_valid():
+        data = form_controle.cleaned_data
+        operador = CadastroPessoa.objects.get(cracha=data.get("cracha"))
+        coletor = Coletores.objects.get(codigo=data.get("codigo"))
+        doc = form_controle.save(commit=False)
+        doc.operador = operador
+        doc.coletor = coletor
+        doc.dtentrega = timezone.now()
+        doc.userentrega = request.user
+        doc.userretirada = request.user
+        doc.save()
+        return redirect('listar_controles')
+    return render(request, 'controle.html',  {"form": form_controle, "entrega": True})
 
 
 def voltar_coletor(request, id):
@@ -145,3 +149,27 @@ def listar_coletores(request):
     coletor = Coletores.objects.all()
     return render(request, 'coletores_list.html', {'dados': coletor})
 
+
+def busca_coletor(request, template_name='coletores_list'):
+    busca = request.GET.get("busca")
+    if busca:
+        coletor = Coletores.objects.filter(codigo=busca).first()
+        return render(request, 'coletores_list.html', {'lista': coletor})
+
+    # coletor = None
+    # return render(request, template_name, {'lista': coletor})
+    # return render(request, 'coletores_list.html')
+
+
+def status_users_update(request, id):
+    user = get_object_or_404(CadastroPessoa, pk=id)
+    form = PessoasForm(request.POST or None, instance=user)
+    if form.is_valid():
+        form.save()
+        return redirect('listar_users')
+    return render(request, 'user_new.html', {"form": form})
+
+
+def listar_users(request):
+    user = CadastroPessoa.objects.all()
+    return render(request, 'user_list.html', {'dados': user})

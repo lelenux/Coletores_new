@@ -26,6 +26,7 @@
                         <a class="dropdown-item" href={% url 'adduser' %}>Cadastro Usuário</a>
                         <a class="dropdown-item" href={% url 'addcoletor' %}>Cadastro Coletor</a>
                         <a class="dropdown-item" href={% url 'coletores_list' %}>Lista de Coletores</a>
+                        <a class="dropdown-item" href={% url 'listar_users' %}>Lista de Usuários</a>
                         <a class="dropdown-item" href={% url 'history' %}>Histórico</a>
                         {#                        <div class="dropdown-divider"></div>#}
                         {#                        <a class="dropdown-item" href="#">Something else here</a>#}
@@ -63,7 +64,7 @@
             <tbody>
             {% for controle in lista %}
                 <tr>
-                    {#                                    <th scope="row"></th>#}
+
                     <td><a href="{% url 'coletor_update' controle.id %}">{{ controle.operador }}</a></td>
                     <td>{{ controle.operador.cracha }}</td>
                     <td>{{ controle.coletor }}</td>

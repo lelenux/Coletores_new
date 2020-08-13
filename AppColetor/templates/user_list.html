@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Listagem de Coletores{% endblock %}
+{% block title %}Listagem de Usuários{% endblock %}
 {% block main %}
     <br>
     <br>
@@ -45,30 +45,25 @@
     <br>
 
     <div class="panel-heading">
-        <h3 class="navbar navbar-light mb-0 text-white" style="background-color: #2F4F2F;">Lista de Coletores</h3>
+        <h3 class="navbar navbar-light mb-0 text-white" style="background-color: #2F4F2F;">Lista de Colaboradores - Keepers
+            Logística</h3>
     </div>
 
     <table class="table table-hover">
-        <caption>Lista de Coletores</caption>
+        <caption>Lista de Usuários</caption>
         <thead>
         <tr>
             {#                <th scope="row">#</th>#}
-            <th scope="col">Código</th>
-            <th scope="col">Modelo</th>
-            <th scope="col">Marca</th>
-            <th scope="col">Número de Série</th>
-            <th scope="col">Status</th>
+            <th scope="col">Colaborador</th>
+            <th scope="col">Matrícula</th>
         </tr>
         </thead>
         <tbody>
-        {% for coletor in dados %}
+        {% for user in dados %}
             <tr>
 
-            <td><a href="{% url 'status_coletor_update' coletor.id %}">{{ coletor.codigo }}</a></td>
-            <td>{{ coletor.model }}</td>
-            <td>{{ coletor.get_marca_display }}</td>
-            <td>{{ coletor.serial_number }}</td>
-            <td>{{ coletor.get_status_display }}</td>
+            <td><a href="{% url 'status_users_update' user.id %}">{{ user.nome }}</a></td>
+            <td>{{ user.cracha }}</td>
 
         {% endfor %}
         </tr>
@@ -76,5 +71,5 @@
     </table>
     </div>
     <br>
-    <a href="{% url 'coletores_list' %}" class="btn btn-primary">Voltar</a>
+    <a href="{% url 'listar_controles' %}" class="btn btn-primary">Voltar</a>
 {% endblock %}
