@@ -8,7 +8,7 @@ from django.utils import timezone
 from datetime import datetime
 from django.db.models import Q
 
-
+@login_required
 def listar_controles(request, template_name="home.html"):
     busca = request.GET.get("busca")  #Pego o conteudo do campo busca do html
 
@@ -38,7 +38,7 @@ def addcoletor(request):
         return redirect('listar_controles')
     return render(request, 'coletor_new.html', {'form': form_coletor})
 
-
+@login_required
 def controle(request):
     form_controle = ControleForm(request.POST, None)
 
@@ -84,7 +84,7 @@ def coletor_update(request, id):
     coletor.save()
     return redirect('listar_controles')
 
-
+@login_required
 def status_coletor_update(request, id): # Recebe a reposta da pesquisa + o ID.
     coletor = get_object_or_404(Coletores, pk=id) # Tenta recuperar o objeto que o usuario esta tentando, se não ele retorna o erro de 404 de dado que não exsite)
     # Pego o ID no banco pelo "pk é o ID de cada código do coletor no banco"
@@ -96,7 +96,7 @@ def status_coletor_update(request, id): # Recebe a reposta da pesquisa + o ID.
         return redirect('coletores_list')
     return render(request, 'coletor_new.html', {"form": form})
 
-
+@login_required
 def observacao(request, id):
     controle = get_object_or_404(Controle, pk=id)
     form_controle = ControleForm(request.POST or None, instance=controle)
@@ -114,7 +114,7 @@ def observacao(request, id):
         return redirect('listar_controles')
     return render(request, 'controle.html',  {"form": form_controle, "entrega": True})
 
-
+@login_required
 def voltar_coletor(request, id):
     coletor = get_object_or_404(Controle, pk=id)
     coletor.dtentrega = None
@@ -130,7 +130,7 @@ def entrega_coletor(request, id):
     coletor.save()
     return redirect('listar_controles')
 
-
+@login_required
 def history(request, template_name='list_control.html'):
     dtinicial = request.GET.get("dtinicial")
     dtfinal = request.GET.get("dtfinal")
@@ -144,23 +144,17 @@ def history(request, template_name='list_control.html'):
     dados = Controle.objects.all().order_by("dtretirada")
     return render(request, 'list_control.html', {'dados': dados})
 
-
+@login_required
 def listar_coletores(request):
+    busca = request.GET.get("busca")
+    if busca:
+        coletor = Coletores.objects.filter(codigo=busca)
+        return render(request, 'coletores_list.html', {'dados': coletor})
+
     coletor = Coletores.objects.all()
     return render(request, 'coletores_list.html', {'dados': coletor})
 
-
-def busca_coletor(request, template_name='coletores_list'):
-    busca = request.GET.get("busca")
-    if busca:
-        coletor = Coletores.objects.filter(codigo=busca).first()
-        return render(request, 'coletores_list.html', {'lista': coletor})
-
-    # coletor = None
-    # return render(request, template_name, {'lista': coletor})
-    # return render(request, 'coletores_list.html')
-
-
+@login_required
 def status_users_update(request, id):
     user = get_object_or_404(CadastroPessoa, pk=id)
     form = PessoasForm(request.POST or None, instance=user)
@@ -169,7 +163,12 @@ def status_users_update(request, id):
         return redirect('listar_users')
     return render(request, 'user_new.html', {"form": form})
 
-
+@login_required
 def listar_users(request):
+    busca = request.GET.get("busca")
+    if busca:
+        user = CadastroPessoa.objects.filter(Q(nome__icontains=busca) | Q(cracha__icontains=busca)).all()
+        return render(request, 'user_list.html', {'dados': user})
     user = CadastroPessoa.objects.all()
     return render(request, 'user_list.html', {'dados': user})
+
