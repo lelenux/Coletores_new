@@ -1,0 +1,5 @@
+django-bootstrap-datepicker-plus
+django==3.0.8
+django-sslserver==0.22
+django-widget-tweaks==1.4.8
+pillow==7.2.0
